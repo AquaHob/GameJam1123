@@ -11,6 +11,6 @@ public class TestSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TestText.text = "Hello World!";
+        TestText.text = "Wir sind gleich wieder da!";
     }
 }
