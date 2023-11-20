@@ -11,6 +11,7 @@ public class BGSpawner : MonoBehaviour
     public GameObject lanternPrefabL;
     public GameObject lanternPrefabR;
     public BgCarSpawner BgCarSpawner;
+    public Steuerung Steuerung;
     private float bgXLeft;
     private float bgXRight;
     private float bgY = 2.8f;
@@ -77,9 +78,10 @@ public class BGSpawner : MonoBehaviour
     }
     private void BGMover()
     {
+        StageSelect();
         foreach (GameObject bgL in BGLeft)
         {
-            bgL.transform.position = new Vector3(bgL.transform.position.x - BgCarSpawner.moveSpeed * 0.1f * Time.deltaTime, bgY, 1f);
+            bgL.transform.position = new Vector3(bgL.transform.position.x - BgCarSpawner.moveSpeedL * 0.1f * Time.deltaTime, bgY, 1f);
 
             if (bgL.transform.position.x <= -10)
             {
@@ -88,18 +90,17 @@ public class BGSpawner : MonoBehaviour
         }
         foreach (GameObject bgR in BGRight)
         {
-            bgR.transform.position = new Vector3(bgR.transform.position.x + BgCarSpawner.moveSpeed * 0.1f * Time.deltaTime, bgY, 1f);
+            bgR.transform.position = new Vector3(bgR.transform.position.x + BgCarSpawner.moveSpeedR * 0.1f * Time.deltaTime, bgY, 1f);
 
             if (bgR.transform.position.x >= 10)
             {
                 bgR.transform.position = new Vector3(bgR.transform.position.x - 10, bgY, 1f);
             }
         }
-        sun.transform.position = new Vector3(sun.transform.position.x - BgCarSpawner.moveSpeed * 0.0005f * Time.deltaTime, sun.transform.position.y - BgCarSpawner.moveSpeed * 0.00005f * Time.deltaTime, 2f);
 
         foreach (GameObject StripeGOLeft in StripesLeft)
         {
-            StripeGOLeft.transform.position = new Vector3(StripeGOLeft.transform.position.x - BgCarSpawner.moveSpeed * Time.deltaTime, 1.412f, 0f);
+            StripeGOLeft.transform.position = new Vector3(StripeGOLeft.transform.position.x - BgCarSpawner.moveSpeedL * Time.deltaTime, 1.412f, 0f);
             if (StripeGOLeft.transform.position.x <= -10)
             {
                 StripeGOLeft.transform.position = new Vector3(StripeGOLeft.transform.position.x + 10, 1.412f, 0f);
@@ -107,7 +108,7 @@ public class BGSpawner : MonoBehaviour
         }
         foreach (GameObject StripeGORight in StripesRight)
         {
-            StripeGORight.transform.position = new Vector3(StripeGORight.transform.position.x + BgCarSpawner.moveSpeed * Time.deltaTime, 1.412f, 0f);
+            StripeGORight.transform.position = new Vector3(StripeGORight.transform.position.x + BgCarSpawner.moveSpeedR * Time.deltaTime, 1.412f, 0f);
             if (StripeGORight.transform.position.x >= 10)
             {
                 StripeGORight.transform.position = new Vector3(StripeGORight.transform.position.x - 10, 1.412f, 0f);
@@ -115,7 +116,7 @@ public class BGSpawner : MonoBehaviour
         }
         foreach (GameObject LanternGOLeft in LanternsLeft)
         {
-            LanternGOLeft.transform.position = new Vector3(LanternGOLeft.transform.position.x - BgCarSpawner.moveSpeed * 0.8f * Time.deltaTime, 2.91f, 0.5f);
+            LanternGOLeft.transform.position = new Vector3(LanternGOLeft.transform.position.x - BgCarSpawner.moveSpeedL * 0.8f * Time.deltaTime, 2.91f, 0.5f);
             if (LanternGOLeft.transform.position.x <= -10)
             {
                 LanternGOLeft.transform.position = new Vector3(LanternGOLeft.transform.position.x + 10, 2.91f, 0.5f);
@@ -123,11 +124,49 @@ public class BGSpawner : MonoBehaviour
         }
         foreach (GameObject LanternGORight in LanternsRight)
         {
-            LanternGORight.transform.position = new Vector3(LanternGORight.transform.position.x + BgCarSpawner.moveSpeed * 0.8f * Time.deltaTime, 2.91f, 0.5f);
+            LanternGORight.transform.position = new Vector3(LanternGORight.transform.position.x + BgCarSpawner.moveSpeedR * 0.8f * Time.deltaTime, 2.91f, 0.5f);
             if (LanternGORight.transform.position.x >= 10)
             {
                 LanternGORight.transform.position = new Vector3(LanternGORight.transform.position.x - 10, 2.91f, 0.5f);
             }
         }
+        sun.transform.position = new Vector3(sun.transform.position.x - 5f * 0.0005f * Time.deltaTime, sun.transform.position.y - 5f * 0.00005f * Time.deltaTime, 2f);
+    }
+    private void StageSelect()
+    {
+        if (Steuerung.GameStagePlayer1 == 1)
+        {
+            BgCarSpawner.moveSpeedL = 5f;
+        }
+        else if (Steuerung.GameStagePlayer1 == 2)
+        {
+            BgCarSpawner.moveSpeedL = 5f * 1.5f;
+        }
+        else if (Steuerung.GameStagePlayer1 == 3)
+        {
+            BgCarSpawner.moveSpeedL = 5f * 2.2f;
+        }
+        else
+        {
+            BgCarSpawner.moveSpeedL = 5f * 3f;
+        }
+
+        if (Steuerung.GameStagePlayer2 == 1)
+        {
+            BgCarSpawner.moveSpeedR = 5f;
+        }
+        else if (Steuerung.GameStagePlayer2 == 2)
+        {
+            BgCarSpawner.moveSpeedR = 5f * 1.5f;
+        }
+        else if (Steuerung.GameStagePlayer2 == 3)
+        {
+            BgCarSpawner.moveSpeedR = 5f * 2.2f;
+        }
+        else
+        {
+            BgCarSpawner.moveSpeedR = 5f * 3f;
+        }
+        return;
     }
 }
