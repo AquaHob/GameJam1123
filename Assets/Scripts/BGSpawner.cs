@@ -134,15 +134,15 @@ public class BGSpawner : MonoBehaviour
     }
     private void StageSelect()
     {
-        if (Steuerung.GameStagePlayer1 == 1)
+        if (Steuerung.Player1.gameStage == 1)
         {
             BgCarSpawner.moveSpeedL = 5f;
         }
-        else if (Steuerung.GameStagePlayer1 == 2)
+        else if (Steuerung.Player1.gameStage == 2)
         {
             BgCarSpawner.moveSpeedL = 5f * 1.5f;
         }
-        else if (Steuerung.GameStagePlayer1 == 3)
+        else if (Steuerung.Player1.gameStage == 3)
         {
             BgCarSpawner.moveSpeedL = 5f * 2.2f;
         }
@@ -151,15 +151,15 @@ public class BGSpawner : MonoBehaviour
             BgCarSpawner.moveSpeedL = 5f * 3f;
         }
 
-        if (Steuerung.GameStagePlayer2 == 1)
+        if (Steuerung.Player2.gameStage == 1)
         {
             BgCarSpawner.moveSpeedR = 5f;
         }
-        else if (Steuerung.GameStagePlayer2 == 2)
+        else if (Steuerung.Player2.gameStage == 2)
         {
             BgCarSpawner.moveSpeedR = 5f * 1.5f;
         }
-        else if (Steuerung.GameStagePlayer2 == 3)
+        else if (Steuerung.Player2.gameStage == 3)
         {
             BgCarSpawner.moveSpeedR = 5f * 2.2f;
         }

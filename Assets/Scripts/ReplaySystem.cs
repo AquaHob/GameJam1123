@@ -24,7 +24,7 @@ public class ReplaySystem : MonoBehaviour
         }
         Steuerung = StGO.GetComponent<Steuerung>();
 
-        if(Steuerung.Player1DistanceRemaining < Steuerung.Player2DistanceRemaining){
+        if(Steuerung.Player1.distanceRemaining < Steuerung.Player2.distanceRemaining){
             WinnerText.text = "Player 1 won!";
         }else{
             WinnerText.text = "Player 2 won!";

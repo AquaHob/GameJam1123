@@ -89,7 +89,7 @@ public class BgCarSpawner : MonoBehaviour
     }
     private void StageSelect()
     {
-        if (Steuerung.GameStagePlayer1 == 1)
+        if (Steuerung.Player1.gameStage == 1)
         {
             moveSpeedL = 5f;
             carL.transform.position = new Vector3(carL.transform.position.x + moveSpeedL * Time.deltaTime, 2.5f, -5f);
@@ -98,7 +98,7 @@ public class BgCarSpawner : MonoBehaviour
                 carL.transform.position = new Vector3(-7.5f, 2.5f, -5f);
             }
         }
-        else if (Steuerung.GameStagePlayer1 == 2)
+        else if (Steuerung.Player1.gameStage == 2)
         {
             moveSpeedL = 5f * 1.5f;
             carL.transform.position = new Vector3(carL.transform.position.x + moveSpeedL * Time.deltaTime, 2.5f, -5f);
@@ -107,7 +107,7 @@ public class BgCarSpawner : MonoBehaviour
                 carL.transform.position = new Vector3(-6.5f, 2.5f, -5f);
             }
         }
-        else if (Steuerung.GameStagePlayer1 == 3)
+        else if (Steuerung.Player1.gameStage == 3)
         {
             moveSpeedL = 5f * 2.2f;
             carL.transform.position = new Vector3(carL.transform.position.x + moveSpeedL * Time.deltaTime, 2.5f, -5f);
@@ -126,7 +126,7 @@ public class BgCarSpawner : MonoBehaviour
             }
         }
 
-        if (Steuerung.GameStagePlayer2 == 1)
+        if (Steuerung.Player2.gameStage == 1)
         {
             moveSpeedR = 5f;
             carR.transform.position = new Vector3(carR.transform.position.x - moveSpeedR * Time.deltaTime, 2.5f, -5f);
@@ -135,7 +135,7 @@ public class BgCarSpawner : MonoBehaviour
                 carR.transform.position = new Vector3(7.5f, 2.5f, -5f);
             }
         }
-        else if (Steuerung.GameStagePlayer2 == 2)
+        else if (Steuerung.Player2.gameStage == 2)
         {
             moveSpeedR = 5f * 1.5f;
             carR.transform.position = new Vector3(carR.transform.position.x - moveSpeedR * Time.deltaTime, 2.5f, -5f);
@@ -144,7 +144,7 @@ public class BgCarSpawner : MonoBehaviour
                 carR.transform.position = new Vector3(6.5f, 2.5f, -5f);
             }
         }
-        else if (Steuerung.GameStagePlayer2 == 3)
+        else if (Steuerung.Player2.gameStage == 3)
         {
             moveSpeedR = 5f * 2.2f;
             carR.transform.position = new Vector3(carR.transform.position.x - moveSpeedR * Time.deltaTime, 2.5f, -5f);
