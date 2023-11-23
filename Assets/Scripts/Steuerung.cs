@@ -116,7 +116,6 @@ public class Steuerung : MonoBehaviour
             StartEvent();
             eventCountDownActive = false;
             EventStartAnnouncementText.text = "";
-            pSchild.SetActive(true);
         }
     }
 
@@ -142,6 +141,7 @@ public class Steuerung : MonoBehaviour
         Player2.EventStop();
 
         EventCountDownText.text = "";
+        pSchild.SetActive(true);
     }
 
     public bool PlayerGameStageHigherThanOther(Player P_in){
