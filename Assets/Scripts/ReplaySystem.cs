@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
@@ -9,6 +10,10 @@ public class ReplaySystem : MonoBehaviour
 {
     public GameObject GameOverMenu;
     public TextMeshProUGUI WinnerText;
+    public Image WinnerImage;
+
+    [SerializeField] private Sprite Player1WinnerSprite;
+    [SerializeField] private Sprite Player2WinnerSprite;
 
     private Steuerung Steuerung;
 
@@ -23,12 +28,6 @@ public class ReplaySystem : MonoBehaviour
             return;
         }
         Steuerung = StGO.GetComponent<Steuerung>();
-
-        if(Steuerung.Player1.distanceRemaining < Steuerung.Player2.distanceRemaining){
-            WinnerText.text = "Player 1 won!";
-        }else{
-            WinnerText.text = "Player 2 won!";
-        }
     }
 
     private async void StartGameOverIntputs(){
@@ -42,6 +41,15 @@ public class ReplaySystem : MonoBehaviour
         if(gameOverMenuShown) {
             Debug.LogError("Game Over Menu already active!");
             return;
+        }
+        gameOverMenuShown = true;
+
+        if(Steuerung.Player1.distanceRemaining < Steuerung.Player2.distanceRemaining){
+            WinnerText.text = "Player 1 won!";
+            WinnerImage.sprite = Player1WinnerSprite;
+        }else{
+            WinnerText.text = "Player 2 won!";
+            WinnerImage.sprite = Player2WinnerSprite;
         }
 
         GameOverMenu.SetActive(true);

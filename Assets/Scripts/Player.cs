@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -99,8 +100,8 @@ public class Player : MonoBehaviour {
                 if (hundreds < 0) hundreds += 10;
                 msCount -= hundredsUpdateTimeMS;
             }
-            int ranTen = Random.Range(0, 9);
-            int ranOnes = Random.Range(1, 9);
+            int ranTen = UnityEngine.Random.Range(0, 9);
+            int ranOnes = UnityEngine.Random.Range(1, 9);
             // randomize tens and singles
             DistanceSubText.text = "," + hundreds.ToString() + ranTen.ToString() + ranOnes.ToString() + "m";
             
@@ -153,7 +154,7 @@ public class Player : MonoBehaviour {
         if (correctInputs == 15){
             PlayerStageUp();
 
-            if(!Steuerung.eventCountDownActive && Steuerung.PlayerGameStageHigherThanOther(this)){
+            if(!Steuerung.eventCountDownActive && Steuerung.GetOtherPlayer(this).gameStage < this.gameStage){
                Steuerung.StartEventCountDown(); 
             }
         }
@@ -180,28 +181,30 @@ public class Player : MonoBehaviour {
         {
             Steuerung.StopEvent();
             ShowWinnerText();
-            Debug.Log("P1 wins Event");
-            Steuerung.Player2.ShowLoserText();
+            Debug.Log("P"+this.playerNumber.ToString()+" wins Event");
+            Steuerung.GetOtherPlayer(this).ShowLoserText();
         }
     }
 
     public void RollNextInput(){
         eventLoser = false;
-        int ran = Random.Range(0, PossibleInputs.Length);
+        int ran = ( Array.IndexOf(PossibleInputs, CurrentInputPrompt) + UnityEngine.Random.Range(1, PossibleInputs.Length-1) ) % PossibleInputs.Length;
         CurrentInputPrompt = PossibleInputs[ran];
         KeyPromptText.text = CurrentInputPrompt.ToString();
     }
 
     private void ChangeButtonVisual(){
-        int ranIndex = (lastButtonSpriteIndex + Random.Range(1, Steuerung.ButtonSpriteList.Count)) % Steuerung.ButtonSpriteList.Count;
+        int ranIndex = (lastButtonSpriteIndex + UnityEngine.Random.Range(1, Steuerung.ButtonSpriteList.Count)) % Steuerung.ButtonSpriteList.Count;
         PlayerButtonImage.sprite = Steuerung.ButtonSpriteList[ranIndex];
         lastButtonSpriteIndex = ranIndex;
     }
 
     private void PlayerStageUp(){
-        gameStage++;
+        if(gameStage < Steuerung.maxStage){
+            ShowStageUpText();
+            gameStage++;
+        }
         correctInputs = 0;
-        ShowStageUpText();
     }
 
     private async void ShowStageUpText(){
@@ -244,8 +247,7 @@ public class Player : MonoBehaviour {
     private void PlayerWins(){
         distanceRemaining = 0;
         DistanceMainText.text = "0";
-        Steuerung.gameOngoing = false;
-        Steuerung.PlayWinnerSound();
+        Steuerung.RaceOver();
 
         Debug.Log("P"+playerNumber.ToString()+" Wins!");
     }

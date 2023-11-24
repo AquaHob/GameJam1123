@@ -19,8 +19,10 @@ public class Steuerung : MonoBehaviour
     public Player Player1;
     public Player Player2;
 
+    public ReplaySystem ReplaySystem; 
+
     public int totalDistance = 300;
-    [SerializeField] private int maxStage = 4;
+    public int maxStage = 4;
     [SerializeField] private int gameStartCounter = 3;
     [SerializeField] private int eventStartCounter = 5;
     [SerializeField] private int maxMashCount = 20;
@@ -129,7 +131,7 @@ public class Steuerung : MonoBehaviour
             eventGameStage = Mathf.Min(Player1.gameStage + 1, maxStage);
         }
         else {
-            eventGameStage = Mathf.Min(Player1.gameStage + 1, maxStage);
+            eventGameStage = Mathf.Min(Player2.gameStage + 1, maxStage);
         }
 
         Player1.EventStart(mashRan, eventGameStage);
@@ -144,15 +146,21 @@ public class Steuerung : MonoBehaviour
         pSchild.SetActive(true);
     }
 
-    public bool PlayerGameStageHigherThanOther(Player P_in){
+    public Player GetOtherPlayer(Player P_in){
         if(P_in.playerNumber == 1){
-            return P_in.gameStage > Player2.gameStage;
+            return Player2;
         }else if(P_in.playerNumber == 2){
-            return P_in.gameStage > Player1.gameStage;
+            return Player1;
         }else{
             Debug.LogError("Unexpected Player Number: "+P_in.playerNumber.ToString());
-            return false;
+            return null;
         }
+    }
+
+    public void RaceOver(){
+        gameOngoing = false;
+        PlayWinnerSound();
+        ReplaySystem.ShowGameOverMenu();
     }
 
 
