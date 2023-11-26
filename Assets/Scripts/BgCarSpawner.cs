@@ -9,59 +9,21 @@ public class BgCarSpawner : MonoBehaviour
     public GameObject carR;
     public float moveSpeedL = 5f;
     public float moveSpeedR = 5f;
-    private float carMoveFloat = 1f;
     private float bgCarY = 2.65f;
-    private float bgCarXLeft = -0.2f;
-    private float bgCarXRight = 0.2f;
     private List<GameObject> BgCarLeft = new List<GameObject>();
     private List<GameObject> BgCarRight = new List<GameObject>();
-    private SpriteRenderer ranSpriteRenderer;
     public List<Sprite> BGCarSprites = new List<Sprite>();
     public Steuerung Steuerung;
 
     // Start is called before the first frame update
     void Start()
     {
-        CarSpawner();
-    }
-
-    private void CarSpawner()
-    {
-        for (int i = 0; i < 7; i++)
-        {
-            //Debug.Log("Du auch hier?");
-            bgCarXLeft -= 1.4f;
-            BgCarLeft.Add(Instantiate(bgCarPrefab, new Vector3(bgCarXLeft, bgCarY, 0f), transform.rotation));
-            ChangeSprite();
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            bgCarXRight += 1.4f;
-            BgCarRight.Add(Instantiate(bgCarPrefab, new Vector3(bgCarXRight, bgCarY, 0f), transform.rotation));
-            ChangeSprite();
-        }
-
-    }
-    private void ChangeSprite()
-    {
-        ranSpriteRenderer = bgCarPrefab.GetComponent<SpriteRenderer>();
-        int ranIndex = Random.Range(0, BGCarSprites.Count);
-        ranSpriteRenderer.sprite = BGCarSprites[ranIndex];
-        if (bgCarPrefab.transform.position.x > 5)
-        {
-            //Debug.Log("Gr   deine Mama von mir");
-            ranSpriteRenderer.flipX = true;
-        }
-        else
-        {
-            ranSpriteRenderer.flipX = false;
-        }
-
+        //CarSpawner();
     }
     // Update is called once per frame
     void Update()
     {
-        CarMover();
+        //CarMover();
     }
 
     private void CarMover()

@@ -4,97 +4,142 @@ using UnityEngine;
 
 public class BGSpawner : MonoBehaviour
 {
-    public GameObject bgPrefab;
+    [Header("Prefab Referenzen")]
+    public GameObject BuildingPrefab;
+    public GameObject StripePrefab;
+    public GameObject LampPrefab;
+    public GameObject BGCarPrefab;
+
+    [Header("GO Referenzen")]
     public GameObject sun;
-    public GameObject stripePrefabL;
-    public GameObject stripePrefabR;
-    public GameObject lanternPrefabL;
-    public GameObject lanternPrefabR;
+    public GameObject SkyBox;
+
+    [Header("Klassen Referenzen")]
     public BgCarSpawner BgCarSpawner;
     public Steuerung Steuerung;
-    private float bgXLeft;
-    private float bgXRight;
-    private float bgY = 2.8f;
-    private float stripeLeft;
-    private float stripeRight;
-    private float lanternLeft;
-    private float lanternRight;
 
-    private List<GameObject> BGLeft = new List<GameObject>();
-    private List<GameObject> BGRight = new List<GameObject>();
+    private float skyBoxY;
+    
+    [SerializeField] private float skyBoxWidth = 10f;
+    [SerializeField] private float buildingWidth = 1.2f;
+    [SerializeField] private float stripeWidth = 1f;
+    [SerializeField] private float lampWidth = 1.1f;
+    [SerializeField] private float bgCarWidth = 1.4f;
+    [SerializeField] private float stripeYOffset = -1.39f;
+    [SerializeField] private float lampYOffset = 0.115f;
+    [SerializeField] private float bgCarYOffset = 0;
+
+    public List<Sprite> BuildingSprites = new List<Sprite>();
+    public List<Sprite> BGCarSprites = new List<Sprite>();
+
+    private List<GameObject> BuildingsLeft = new List<GameObject>();
+    private List<GameObject> BuildingsRight = new List<GameObject>();
     private List<GameObject> StripesLeft = new List<GameObject>();
     private List<GameObject> StripesRight = new List<GameObject>();
-    private List<GameObject> LanternsLeft = new List<GameObject>();
-    private List<GameObject> LanternsRight = new List<GameObject>();
-
-    public List<Sprite> BGSprites = new List<Sprite>();
-
-    private SpriteRenderer ranSpriterenderer;
-
+    private List<GameObject> LampsLeft = new List<GameObject>();
+    private List<GameObject> LampsRight = new List<GameObject>();
+    private List<GameObject> BGCarsLeft = new List<GameObject>();
+    private List<GameObject> BGCarsRight = new List<GameObject>();
 
 
     // Start is called before the first frame update
     void Start()
     {
-        BackgroundSpawner();
+        skyBoxY = SkyBox.transform.position.y;
+        SpawnBackground();
     }
-    private void BackgroundSpawner()
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            bgXLeft -= 1.2f;
-            BGLeft.Add(Instantiate(bgPrefab, new Vector3(bgXLeft, bgY, 1F), transform.rotation));
-            bgXRight += 1.2f;
-            BGRight.Add(Instantiate(bgPrefab, new Vector3(bgXRight, bgY, 1F), transform.rotation));
-            ChangeSprite();
-        }
-        for (int i = 0; i < 10; i++)
-        {
-            stripeLeft -= 1f;
-            StripesLeft.Add(Instantiate(stripePrefabL, new Vector3(stripeLeft, 1.412f, -1f), transform.rotation));
-            stripeRight += 1f;
-            StripesRight.Add(Instantiate(stripePrefabR, new Vector3(stripeRight, 1.412f, -1f), transform.rotation));
-        }
-        for (int i = 0; i < 9; i++)
-        {
-            lanternLeft -= 1.1f;
-            LanternsLeft.Add(Instantiate(lanternPrefabL, new Vector3(lanternLeft, 2.91f, 0.5f), transform.rotation));
-            lanternRight += 1.1f;
-            LanternsRight.Add(Instantiate(lanternPrefabR, new Vector3(lanternRight, 2.91f, 0.5f), transform.rotation));
-        }
-    }
-    private void ChangeSprite()
-    {
-        ranSpriterenderer = bgPrefab.GetComponent<SpriteRenderer>();
-        int ranIndex = Random.Range(0, BGSprites.Count);
-        ranSpriterenderer.sprite = BGSprites[ranIndex];
-    }
-
-
     // Update is called once per frame
     void Update()
     {
-        BGMover();
+        //BGMover();
     }
+
+    #region Spawn Functions
+    private void SpawnBackground()
+    {
+        SpawnBuildings();
+        SpawnStripes();
+        SpawnLamps();
+        SpawnBGCars();
+    }
+    private void SpawnBuildings()
+    {
+        float buildingX = 0f;
+        while (buildingX <= skyBoxWidth)
+        {
+            BuildingsLeft.Add(Instantiate(BuildingPrefab, new Vector3(buildingX * (-1), skyBoxY, 1f), transform.rotation));
+            ChangeBuildingSprite();
+            BuildingsRight.Add(Instantiate(BuildingPrefab, new Vector3(buildingX, skyBoxY, 1f), transform.rotation));
+            ChangeBuildingSprite();
+            buildingX += buildingWidth;
+        }
+    }
+    private void SpawnStripes()
+    {
+        float stripeX = 1f;
+        while (stripeX <= skyBoxWidth)
+        {
+            StripesLeft.Add(Instantiate(StripePrefab, new Vector3(stripeX * (-1), skyBoxY + stripeYOffset, -1f), transform.rotation));
+            StripesRight.Add(Instantiate(StripePrefab, new Vector3(stripeX, skyBoxY + stripeYOffset, -1f), transform.rotation));
+            stripeX += stripeWidth;
+        }
+    }
+    private void SpawnLamps()
+    {
+        float lampX = 1.1f;
+        while (lampX <= skyBoxWidth)
+        {
+            LampsLeft.Add(Instantiate(LampPrefab, new Vector3(lampX * (-1), skyBoxY + lampYOffset, 0.5f), transform.rotation));
+            LampsRight.Add(Instantiate(LampPrefab, new Vector3(lampX, skyBoxY + lampYOffset, 0.5f), transform.rotation));
+            lampX += lampWidth;
+        }
+    }
+    private void SpawnBGCars()
+    {
+        float bgCarX = 1.4f;
+        while (bgCarX <= skyBoxWidth)
+        {
+            BGCarsLeft.Add(Instantiate(BGCarPrefab, new Vector3(bgCarX * (-1), skyBoxY + bgCarYOffset, 0f), transform.rotation));
+            ChangeBGCarSprite();
+            BGCarsRight.Add(Instantiate(BGCarPrefab, new Vector3(bgCarX, skyBoxY + bgCarYOffset, 0f), transform.rotation));
+            ChangeBGCarSprite();
+            bgCarX += bgCarWidth;
+        }
+    }
+    private void ChangeBuildingSprite()
+    {
+        SpriteRenderer ranSpriteRenderer = BuildingPrefab.GetComponent<SpriteRenderer>();
+        int ranIndex = Random.Range(0, BuildingSprites.Count);
+        ranSpriteRenderer.sprite = BuildingSprites[ranIndex];
+    }
+    private void ChangeBGCarSprite()
+    {
+        SpriteRenderer ranSpriteRenderer = BGCarPrefab.GetComponent<SpriteRenderer>();
+        int ranIndex = Random.Range(0, BGCarSprites.Count);
+        ranSpriteRenderer.sprite = BGCarSprites[ranIndex];
+    }
+
+    #endregion
+
     private void BGMover()
     {
         StageSelect();
-        foreach (GameObject bgL in BGLeft)
+        foreach (GameObject bgL in BuildingsLeft)
         {
-            bgL.transform.position = new Vector3(bgL.transform.position.x - BgCarSpawner.moveSpeedL * 0.1f * Time.deltaTime, bgY, 1f);
+            bgL.transform.position = new Vector3(bgL.transform.position.x - BgCarSpawner.moveSpeedL * 0.1f * Time.deltaTime, skyBoxY, 1f);
 
             if (bgL.transform.position.x <= -10)
             {
-                bgL.transform.position = new Vector3(bgL.transform.position.x + 10, bgY, 1f);
+                bgL.transform.position = new Vector3(bgL.transform.position.x + 10, skyBoxY, 1f);
             }
         }
-        foreach (GameObject bgR in BGRight)
+        foreach (GameObject bgR in BuildingsRight)
         {
-            bgR.transform.position = new Vector3(bgR.transform.position.x + BgCarSpawner.moveSpeedR * 0.1f * Time.deltaTime, bgY, 1f);
+            bgR.transform.position = new Vector3(bgR.transform.position.x + BgCarSpawner.moveSpeedR * 0.1f * Time.deltaTime, skyBoxY, 1f);
 
             if (bgR.transform.position.x >= 10)
             {
-                bgR.transform.position = new Vector3(bgR.transform.position.x - 10, bgY, 1f);
+                bgR.transform.position = new Vector3(bgR.transform.position.x - 10, skyBoxY, 1f);
             }
         }
 
@@ -114,7 +159,7 @@ public class BGSpawner : MonoBehaviour
                 StripeGORight.transform.position = new Vector3(StripeGORight.transform.position.x - 10, 1.412f, 0f);
             }
         }
-        foreach (GameObject LanternGOLeft in LanternsLeft)
+        foreach (GameObject LanternGOLeft in LampsLeft)
         {
             LanternGOLeft.transform.position = new Vector3(LanternGOLeft.transform.position.x - BgCarSpawner.moveSpeedL * 0.8f * Time.deltaTime, 2.91f, 0.5f);
             if (LanternGOLeft.transform.position.x <= -10)
@@ -122,7 +167,7 @@ public class BGSpawner : MonoBehaviour
                 LanternGOLeft.transform.position = new Vector3(LanternGOLeft.transform.position.x + 10, 2.91f, 0.5f);
             }
         }
-        foreach (GameObject LanternGORight in LanternsRight)
+        foreach (GameObject LanternGORight in LampsRight)
         {
             LanternGORight.transform.position = new Vector3(LanternGORight.transform.position.x + BgCarSpawner.moveSpeedR * 0.8f * Time.deltaTime, 2.91f, 0.5f);
             if (LanternGORight.transform.position.x >= 10)
